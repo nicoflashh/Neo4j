@@ -1,0 +1,48 @@
+
+//Modelo
+
+CREATE (Madrid:Ciudad{Nombre:"Madrid", Kilometro:0})
+CREATE (Bilbao: Ciudad{Nombre:"Bilbao", Kilometro:400})
+CREATE (Toledo:Ciudad{Nombre:"Toledo",Kilometro:50})
+CREATE (Valencia:Ciudad{Nombre:"Valencia", Kilometro: 300})
+CREATE (Zaragoza:Ciudad{Nombre:"Zaragoza", Kilometro: 600})
+CREATE (Barcelona:Ciudad{Nombre:"Barcelona", Kilometro: 900})
+
+//Almacenes "Los envios salen desde aqui"
+CREATE (Almacen_Albacete:Almacen{Nombre:"Almacen Albacete",Kilometro:80})
+CREATE (Madrid)-[:RUTA{tipo:"Carretera",distancia: abs(Madrid.Kilometro - Almacen_Albacete.Kilometro),precio: abs(Madrid.Kilometro - Almacen_Albacete.Kilometro)*1,tiempo: ((60 * ( abs(Madrid.Kilometro - Almacen_Albacete.Kilometro) ) /100 + ( 5 *2 ) ) ) }]->(Almacen_Albacete)
+CREATE (Almacen_Albacete)-[:RUTA{tipo:"Carretera",distancia: abs(Almacen_Albacete.Kilometro - Toledo.Kilometro),precio: abs(Almacen_Albacete.Kilometro - Toledo.Kilometro)*1,tiempo: ((60 * ( abs(Almacen_Albacete.Kilometro - Toledo.Kilometro) ) /100 + ( 5 *2 ) ) ) }]->(Toledo)
+
+//Almacenes "Los envios salen desde aqui"
+CREATE (Almacen_Burgos:Almacen{Nombre:"Almacen_Burgos",Kilometro:300})
+CREATE (Bilbao)-[:RUTA{tipo:"Maritimo",distancia: abs(Almacen_Burgos.Kilometro - Bilbao.Kilometro),precio: abs(Almacen_Burgos.Kilometro - Bilbao.Kilometro)*1,tiempo: ((60 * ( abs(Almacen_Burgos.Kilometro - Bilbao.Kilometro) ) /100 + ( 5 *2 ) ) ) }]->(Almacen_Burgos)
+CREATE (Almacen_Burgos)-[:RUTA{tipo:"Maritimo",distancia: abs(Almacen_Burgos.Kilometro - Valencia.Kilometro),precio: abs(Almacen_Burgos.Kilometro - Valencia.Kilometro)*1,tiempo: ((60 * ( abs(Almacen_Burgos.Kilometro - Valencia.Kilometro) ) /100 + ( 5 *2 ) ) ) }]->(Valencia)
+
+//Almacenes "Los envios salen desde aqui"
+CREATE (Almacen_Teruel:Almacen{Nombre:"Almacen_Teruel", Kilometro:100})
+CREATE (Valencia)-[:RUTA{tipo:"Carretera",distancia: abs(Almacen_Teruel.Kilometro - Valencia.Kilometro),precio: abs(Almacen_Teruel.Kilometro - Valencia.Kilometro)*1,tiempo: ((60 * ( abs(Almacen_Teruel.Kilometro - Valencia.Kilometro) ) /100 + ( 5 *2 ) ) )}]->(Almacen_Teruel)
+CREATE (Almacen_Teruel)-[:RUTA{tipo:"Carretera",distancia: abs(Almacen_Teruel.Kilometro - Zaragoza.Kilometro),precio: abs(Almacen_Teruel.Kilometro - Zaragoza.Kilometro)*1,tiempo: ((60 * ( abs(Almacen_Teruel.Kilometro - Zaragoza.Kilometro) ) /100 + ( 5 *2 ) ) ) }]->(Zaragoza)
+
+//Relaciones Carretera
+CREATE (Madrid)-[:RUTA{tipo:"Carretera",distancia: abs(Madrid.Kilometro - Bilbao.Kilometro),precio: abs(Madrid.Kilometro - Bilbao.Kilometro)*1,tiempo: ((60 * ( abs(Madrid.Kilometro - Bilbao.Kilometro) ) /100 + ( 5 *2 ) ) ) }]->(Bilbao)
+CREATE (Toledo)-[:RUTA{tipo:"Carretera",distancia: abs(Toledo.Kilometro - Zaragoza.Kilometro),precio: abs(Toledo.Kilometro - Zaragoza.Kilometro)*1,tiempo: ((60 * ( abs(Toledo.Kilometro - Zaragoza.Kilometro) ) /100 + ( 5 *2 ) ) ) }]->(Zaragoza)
+CREATE (Zaragoza)-[:RUTA{tipo:"Carretera",distancia: abs(Zaragoza.Kilometro - Barcelona.Kilometro),precio: abs(Zaragoza.Kilometro - Barcelona.Kilometro)*1,tiempo: ((60 * ( abs(Zaragoza.Kilometro - Barcelona.Kilometro) ) /100 + ( 5 *2 ) ) ) }]->(Barcelona)
+
+//Relaciones Ferrocarril
+CREATE (Madrid)-[:RUTA{tipo:"Ferrocarril",distancia: abs(Madrid.Kilometro - Toledo.Kilometro),precio: abs(Madrid.Kilometro - Toledo.Kilometro)*0.8, tiempo: ((50*(abs(Madrid.Kilometro - Toledo.Kilometro))/100+(10*2)))}]->(Toledo)
+CREATE (Valencia)-[:RUTA{tipo:"Ferrocarril",distancia: abs(Valencia.Kilometro - Madrid.Kilometro),precio: abs(Valencia.Kilometro - Madrid.Kilometro)*0.8, tiempo: ((50*(abs(Valencia.Kilometro - Madrid.Kilometro))/100+(10*2)))}]->(Madrid)
+CREATE (Barcelona)-[:RUTA{tipo:"Ferrocarril",distancia: abs(Barcelona.Kilometro - Madrid.Kilometro),precio: abs(Barcelona.Kilometro - Madrid.Kilometro)*0.8, tiempo: ((50*(abs(Barcelona.Kilometro - Madrid.Kilometro))/100+(10*2)))}]->(Madrid)
+
+//Relaciones Aereo
+CREATE (Madrid)-[:RUTA{tipo:"Aereo",distancia: abs(Madrid.Kilometro - Bilbao.Kilometro),precio: abs(Madrid.Kilometro - Bilbao.Kilometro)*3.5, tiempo: ((10*(abs(Madrid.Kilometro - Bilbao.Kilometro))/100+(40*2)))}]->(Bilbao)
+CREATE (Zaragoza)-[:RUTA{tipo:"Aereo",distancia: abs(Zaragoza.Kilometro - Madrid.Kilometro),precio: abs(Zaragoza.Kilometro - Madrid.Kilometro)*3.5, tiempo: ((10*(abs(Zaragoza.Kilometro - Madrid.Kilometro))/100+(40*2)))}]->(Madrid)
+CREATE (Valencia)-[:RUTA{tipo:"Aereo",distancia: abs(Valencia.Kilometro - Barcelona.Kilometro),precio: abs(Valencia.Kilometro - Barcelona.Kilometro)*3.5, tiempo: ((10*(abs(Valencia.Kilometro - Barcelona.Kilometro))/100+(40*2)))}]->(Barcelona)
+
+//Relaciones Ferrocarril
+CREATE (Toledo)-[:RUTA{tipo:"Ferrocarril",distancia: abs(Toledo.Kilometro - Bilbao.Kilometro),precio: abs(Toledo.Kilometro - Bilbao.Kilometro)*0.8,tiempo: ((50*(abs(Toledo.Kilometro - Bilbao.Kilometro))/100+(10*2)))}]->(Bilbao)
+CREATE (Toledo)-[:RUTA{tipo:"Ferrocarril",distancia: abs(Toledo.Kilometro - Valencia.Kilometro),precio: abs(Toledo.Kilometro - Valencia.Kilometro)*0.8, tiempo: ((50*(abs(Toledo.Kilometro - Valencia.Kilometro))/100+(10*2)))}]->(Valencia)
+
+//Relaciones Maritimo
+CREATE (Barcelona)-[:RUTA{tipo:"Maritimo",distancia: abs(Barcelona.Kilometro - Valencia.Kilometro),precio: abs(Barcelona.Kilometro - Valencia.Kilometro)*0.8, tiempo: ((50*(abs(Barcelona.Kilometro - Valencia.Kilometro))/100+(10*2)))}]->(Valencia)
+CREATE (Bilbao)-[:RUTA{tipo:"Maritimo",distancia: abs(Bilbao.Kilometro - Barcelona.Kilometro),precio: abs(Bilbao.Kilometro - Barcelona.Kilometro)*0.8, tiempo: ((50*(abs(Bilbao.Kilometro - Barcelona.Kilometro))/100+(10*2)))}]->(Barcelona)
+
